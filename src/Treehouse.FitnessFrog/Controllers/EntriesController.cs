@@ -43,8 +43,11 @@ namespace Treehouse.FitnessFrog.Controllers
         {
             var entry = new Entry()
             {
-                Date = DateTime.Today
+                Date = DateTime.Today,
             };
+
+            ViewBag.ActivitiesSelectListItems = new SelectList(
+                Data.Data.Activities, "Id", "Name");
 
             return View(entry);
         }
@@ -56,24 +59,11 @@ namespace Treehouse.FitnessFrog.Controllers
 			{
                 _entriesRepository.AddEntry(entry);
 
-                List<Entry> entries = _entriesRepository.GetEntries();
-
-                // Calculate the total activity.
-                double totalActivity = entries
-                    .Where(e => e.Exclude == false)
-                    .Sum(e => e.Duration);
-
-                // Determine the number of days that have entries.
-                int numberOfActiveDays = entries
-                    .Select(e => e.Date)
-                    .Distinct()
-                    .Count();
-
-                ViewBag.TotalActivity = totalActivity;
-                ViewBag.AverageDailyActivity = (totalActivity / (double)numberOfActiveDays);
-
-                return View("Index", entries);
+                return RedirectToAction("Index");
 			}
+
+            ViewBag.ActivitiesSelectListItems = new SelectList(
+                 Data.Data.Activities, "Id", "Name");
 
 			return View(entry);
         }
