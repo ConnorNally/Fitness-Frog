@@ -56,9 +56,11 @@ namespace Treehouse.FitnessFrog.Controllers
 		{
 			ValidateEntry(entry);
 
-			if (ModelState.IsValid)
-			{
-				_entriesRepository.AddEntry(entry);
+            if (ModelState.IsValid)
+            {
+                _entriesRepository.AddEntry(entry);
+
+                TempData["Message"] = "Your entry was successfully added!";
 
 				return RedirectToAction("Index");
 			}
@@ -90,13 +92,13 @@ namespace Treehouse.FitnessFrog.Controllers
         [HttpPost]
         public ActionResult Edit(Entry entry)
 		{
-            // todo vALIDATE THE ENTRY
             ValidateEntry(entry);
 
-            // TODO If the entry is valid...
             if (ModelState.IsValid)
 			{
                 _entriesRepository.UpdateEntry(entry);
+
+                TempData["Message"] = "Your entry was successfully updated";
 
                 return RedirectToAction("Index");
 			}
@@ -126,10 +128,10 @@ namespace Treehouse.FitnessFrog.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
 		{
-            // TODO Delete the entry.
             _entriesRepository.DeleteEntry(id);
 
-            // TODO Redirect to the "Entries" list page.
+            TempData["Message"] = "Your entry was successfully deleted!";
+
             return RedirectToAction("Index");
 		}
 
